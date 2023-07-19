@@ -38,7 +38,7 @@ In the meantime, below is an example of what you can do with just a few lines of
 #         .encode(x='x:Q', y='y:Q'))
 
 import pandas as pd
-# import geopandas as gpd
+import geopandas as gpd
 # import matplotlib.pyplot as plt
 # import geoplot as gplt
 # import folium
