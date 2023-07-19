@@ -77,6 +77,13 @@ for country in mentions:
   hover_texts.append(get_popup_text(country))
   
 hover_dict = dict(zip(mentions, hover_texts))
-fig.update_traces(hovertemplate=hover_dict)
+
+# Generate list of hover strings
+hover_strings = []
+for country, text in hover_dict.items():
+  hover_strings.append(text) 
+
+# Pass list to hovertemplate
+fig.update_traces(hovertemplate=hover_strings)
 
 st.plotly_chart(fig)
