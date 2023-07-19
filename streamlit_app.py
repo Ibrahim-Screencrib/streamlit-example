@@ -41,54 +41,54 @@ import pandas as pd
 import plotly.express as px 
 import streamlit as st
 
-# Load county mention data 
-mentions = [('United States', 100), ('Canada', 50), ('Mexico', 20)] 
+# # Load county mention data 
+# mentions = [('United States', 100), ('Canada', 50), ('Mexico', 20)] 
 
-# Convert mentions to DataFrame
-mentions_df = pd.DataFrame([
-  ('United States', 10),
-  ('Canada', 20),
-  ('Mexico', 30)  
-])
+# # Convert mentions to DataFrame
+# mentions_df = pd.DataFrame([
+#   ('United States', 10),
+#   ('Canada', 20),
+#   ('Mexico', 30)  
+# ])
 
-# Load tax credit data
-tax_credits = pd.read_csv('ScreenCrib Tax Credit Sheet.csv')
+# # Load tax credit data
+# tax_credits = pd.read_csv('ScreenCrib Tax Credit Sheet.csv')
 
-# Create figure
-fig = px.choropleth(mentions_df, 
-              locations='country',
-              scope='north america')
+# # Create figure
+# fig = px.choropleth(mentions_df, 
+#               locations='country',
+#               scope='north america')
 
-# Create hover text from tax credit info                   
-def get_popup_text(country):
+# # Create hover text from tax credit info                   
+# def get_popup_text(country):
 
-  row = tax_credits[tax_credits['Country'] == country]
+#   row = tax_credits[tax_credits['Country'] == country]
   
-  if len(row) == 0:
-    # No match found
-    return "No tax credit info available"
+#   if len(row) == 0:
+#     # No match found
+#     return "No tax credit info available"
 
-  return f"""
-    Tax Credit Rate: {row['Tax credits'].values[0]}  
-    Eligibility: {row['Eligibility'].values[0]}
-    Description: {row['Country description'].values[0]}
-    Source: {row['Links'].values[0]}
-  """
+#   return f"""
+#     Tax Credit Rate: {row['Tax credits'].values[0]}  
+#     Eligibility: {row['Eligibility'].values[0]}
+#     Description: {row['Country description'].values[0]}
+#     Source: {row['Links'].values[0]}
+#   """
                               
-# Generate hover text and assign to figure  
-hover_texts = []
-for country in mentions:
-  hover_texts.append(get_popup_text(country))
+# # Generate hover text and assign to figure  
+# hover_texts = []
+# for country in mentions:
+#   hover_texts.append(get_popup_text(country))
   
-hover_dict = dict(zip(mentions, hover_texts))
+# hover_dict = dict(zip(mentions, hover_texts))
 
-# Generate list of hover strings
-hover_strings = []
-for country, text in hover_dict.items():
-  hover_strings.append(text) 
+# # Generate list of hover strings
+# hover_strings = []
+# for country, text in hover_dict.items():
+#   hover_strings.append(text) 
 
-# Pass list to hovertemplate
-fig.update_traces(hovertemplate=hover_strings)
+# # Pass list to hovertemplate
+# fig.update_traces(hovertemplate=hover_strings)
 
 df = px.data.gapminder().query("year == 2007")
 fig = px.choropleth(df, locations="iso_alpha", 
