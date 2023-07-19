@@ -40,6 +40,7 @@ In the meantime, below is an example of what you can do with just a few lines of
 import pandas as pd
 import plotly.express as px 
 import streamlit as st
+import plotly.graph_objects as go
 
 # # Load county mention data 
 # mentions = [('United States', 100), ('Canada', 50), ('Mexico', 20)] 
@@ -90,10 +91,23 @@ import streamlit as st
 # # Pass list to hovertemplate
 # fig.update_traces(hovertemplate=hover_strings)
 
-df = px.data.gapminder().query("year == 2007")
-fig = px.choropleth(df, locations="iso_alpha", 
-                    color="lifeExp", 
-                    hover_name="country",
-                    scope="world")
+# df = px.data.gapminder().query("year == 2007")
+# fig = px.choropleth(df, locations="iso_alpha", 
+#                     color="lifeExp", 
+#                     hover_name="country",
+#                     scope="world")
+
+fig = go.Figure(data=go.Choropleth(
+    locations=['CA', 'TX', 'NY'], # Spatial coordinates
+    z = [1.0, 2.0, 3.0], # Data to be color-coded
+    locationmode = 'USA-states', # set of locations match entries in `locations`
+    colorscale = 'Reds',
+    colorbar_title = "Colorbar Title Goes Here",
+))
+
+fig.update_layout(
+    title_text = 'USA States Choropleth Map',
+    geo_scope='usa', # limit map scope to USA
+)
 
 st.plotly_chart(fig)
