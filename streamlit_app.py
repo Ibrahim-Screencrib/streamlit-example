@@ -57,12 +57,18 @@ fig = px.choropleth(mentions_df, locations='country',
 
 # Create hover text from tax credit info                   
 def get_popup_text(country):
+
   row = tax_credits[tax_credits['Country'] == country]
+  
+  if len(row) == 0:
+    # No match found
+    return "No tax credit info available"
+
   return f"""
-  Tax Credit Rate: {row['Tax credits'].values[0]}
-  Eligibility: {row['Eligibility'].values[0]}
-  Description: {row['Country description'].values[0]} 
-  Source: {row['Links'].values[0]}
+    Tax Credit Rate: {row['Tax credits'].values[0]}  
+    Eligibility: {row['Eligibility'].values[0]}
+    Description: {row['Country description'].values[0]}
+    Source: {row['Links'].values[0]}
   """
                               
 # Generate hover text and assign to figure  
