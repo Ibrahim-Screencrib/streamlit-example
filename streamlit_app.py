@@ -45,16 +45,19 @@ import streamlit as st
 mentions = [('United States', 100), ('Canada', 50), ('Mexico', 20)] 
 
 # Convert mentions to DataFrame
-mentions_df = pd.DataFrame(mentions, columns=['country', 'mentions'])
+mentions_df = pd.DataFrame([
+  ('United States', 10),
+  ('Canada', 20),
+  ('Mexico', 30)  
+])
 
 # Load tax credit data
 tax_credits = pd.read_csv('ScreenCrib Tax Credit Sheet.csv')
 
 # Create figure
 fig = px.choropleth(mentions_df, 
-             locations='country',
-             color='mentions',
-             color_continuous_scale=['red', 'blue'])
+              locations='country',
+              scope='north america')
 
 # Create hover text from tax credit info                   
 def get_popup_text(country):
@@ -86,5 +89,11 @@ for country, text in hover_dict.items():
 
 # Pass list to hovertemplate
 fig.update_traces(hovertemplate=hover_strings)
+
+df = px.data.gapminder().query("year == 2007")
+fig = px.choropleth(df, locations="iso_alpha", 
+                    color="lifeExp", 
+                    hover_name="country",
+                    scope="world")
 
 st.plotly_chart(fig)
