@@ -45,7 +45,7 @@ import streamlit as st
 mentions = [('United States', 100), ('Canada', 50), ('Mexico', 20)] 
 
 # Load tax credit data
-tax_credits = pd.read_csv('tax_credits.csv')
+tax_credits = pd.read_csv('ScreenCrib Tax Credit Sheet.csv')
 
 # Create figure
 fig = px.choropleth(mentions, locations='country', 
