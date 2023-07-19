@@ -37,27 +37,37 @@ In the meantime, below is an example of what you can do with just a few lines of
 #         .mark_circle(color='#0068c9', opacity=0.5)
 #         .encode(x='x:Q', y='y:Q'))
 
-import pandas as pd 
-import plotly.express as px
+import pandas as pd
+import plotly.express as px 
 import streamlit as st
 
-# Example list of tuples
-mentions = [('United States', 100), ('Canada', 50), ('Mexico', 20), 
-            ('United Kingdom', 10), ('France', 5), ('Germany', 3)]
+# Load county mention data 
+mentions = [('United States', 100), ('Canada', 50), ('Mexico', 20)] 
 
-# Convert to DataFrame
-mentions_df = pd.DataFrame(mentions, columns=['country', 'mentions'])
+# Load tax credit data
+tax_credits = pd.read_csv('tax_credits.csv')
 
-# Rest of code remains mostly the same...
-fig = px.choropleth(mentions_df, locations='country', 
-                    color='mentions', 
-                    hover_name='country',
-                    color_continuous_scale=px.colors.sequential.Greys)
-                    
+# Create figure
+fig = px.choropleth(mentions, locations='country', 
+             color='mentions',
+             hover_name='country')
+
+# Create hover text from tax credit info                   
 def get_popup_text(country):
-   # lookup tax data
-   ...
-   
-fig.update_traces(hovertemplate=get_popup_text) 
+  row = tax_credits[tax_credits['Country'] == country]
+  return f"""
+  Tax Credit Rate: {row['Tax credits'].values[0]}
+  Eligibility: {row['Eligibility'].values[0]}
+  Description: {row['Country description'].values[0]} 
+  Source: {row['Links'].values[0]}
+  """
+                              
+# Generate hover text and assign to figure  
+hover_texts = []
+for country in mentions:
+  hover_texts.append(get_popup_text(country))
+  
+hover_dict = dict(zip(mentions, hover_texts))
+fig.update_traces(hovertemplate=hover_dict)
 
 st.plotly_chart(fig)
