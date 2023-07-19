@@ -51,10 +51,10 @@ mentions_df = pd.DataFrame(mentions, columns=['country', 'mentions'])
 tax_credits = pd.read_csv('ScreenCrib Tax Credit Sheet.csv')
 
 # Create figure
-fig = px.choropleth(mentions_df,
+fig = px.choropleth(mentions_df, 
              locations='country',
              color='mentions',
-             color_continuous_scale=['#F5DEB3', '#008080'])
+             color_continuous_scale=['red', 'blue'])
 
 # Create hover text from tax credit info                   
 def get_popup_text(country):
