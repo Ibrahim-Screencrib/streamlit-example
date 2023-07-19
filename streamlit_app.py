@@ -37,7 +37,7 @@ In the meantime, below is an example of what you can do with just a few lines of
 #         .mark_circle(color='#0068c9', opacity=0.5)
 #         .encode(x='x:Q', y='y:Q'))
 
-# import pandas as pd
+import pandas as pd
 # import geopandas as gpd
 # import matplotlib.pyplot as plt
 # import geoplot as gplt
@@ -91,5 +91,5 @@ import streamlit as st
 #         pass
 
 # Use Streamlit to show the interactive map
-st.title('World Map with Movie Scripts and Tax Credits Data')
+st.title('World Map with Film Tax Credits Data')
 # folium_static(map)
