@@ -37,14 +37,14 @@ In the meantime, below is an example of what you can do with just a few lines of
 #         .mark_circle(color='#0068c9', opacity=0.5)
 #         .encode(x='x:Q', y='y:Q'))
 
-import pandas as pd
-import geopandas as gpd
-import matplotlib.pyplot as plt
-import geoplot as gplt
-import folium
+# import pandas as pd
+# import geopandas as gpd
+# import matplotlib.pyplot as plt
+# import geoplot as gplt
+# import folium
 import streamlit as st
-from streamlit_folium import folium_static
-from shapely.geometry import Point
+# from streamlit_folium import folium_static
+# from shapely.geometry import Point
 
 # # List of tuples containing movie script data
 # movie_scripts_data = [('USA', 100), ('France', 80)]  # Replace with your actual data
