@@ -112,9 +112,9 @@ import plotly.graph_objects as go
 
 # st.plotly_chart(fig)
 
+import matplotlib.pyplot as plt
 import streamlit as st
 import pandas as pd 
-import matplotlib.pyplot as plt
 
 # Page config
 st.set_page_config(page_title='Film Tax Credits', page_icon=':clapper:')
