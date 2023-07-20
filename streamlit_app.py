@@ -97,17 +97,53 @@ import plotly.graph_objects as go
 #                     hover_name="country",
 #                     scope="world")
 
-fig = go.Figure(data=go.Choropleth(
-    locations=['CA', 'TX', 'NY'], # Spatial coordinates
-    z = [1.0, 2.0, 3.0], # Data to be color-coded
-    locationmode = 'USA-states', # set of locations match entries in `locations`
-    colorscale = 'Reds',
-    colorbar_title = "Colorbar Title Goes Here",
-))
+# fig = go.Figure(data=go.Choropleth(
+#     locations=['CA', 'TX', 'NY'], # Spatial coordinates
+#     z = [1.0, 2.0, 3.0], # Data to be color-coded
+#     locationmode = 'USA-states', # set of locations match entries in `locations`
+#     colorscale = 'Reds',
+#     colorbar_title = "Colorbar Title Goes Here",
+# ))
 
-fig.update_layout(
-    title_text = 'USA States Choropleth Map',
-    geo_scope='usa', # limit map scope to USA
-)
+# fig.update_layout(
+#     title_text = 'USA States Choropleth Map',
+#     geo_scope='usa', # limit map scope to USA
+# )
 
-st.plotly_chart(fig)
+# st.plotly_chart(fig)
+
+import streamlit as st
+import pandas as pd 
+import matplotlib.pyplot as plt
+
+# Page config
+st.set_page_config(page_title='Film Tax Credits', page_icon=':clapper:')
+
+# Load data
+data = pd.read_csv('data.csv')
+
+# Map plot
+fig, ax = plt.subplots()
+ax.scatter(data['Longitude'], data['Latitude'], s=data['Tax Credit']*2000, 
+           c=data['Tax Credit'], cmap='Reds')
+
+# Color bar
+plt.colorbar() 
+
+# Labels 
+for i, country in data.iterrows():
+    plt.text(country['Longitude']+5, country['Latitude'], country['Country'], size=12)
+
+# Plot  
+st.pyplot(fig)
+
+# Info
+st.markdown("""
+This interactive map allows you to visualize the tax credit incentives offered to film production across different countries.
+            
+* Circle size correlates to the percentage tax credit  
+* Color indicates the credit percentage, with darker red signifying higher percentages
+* Rolling over circles shows the country name and tax credit percentage
+
+Use this to help determine which countries offer the most favorable incentives!
+""")
