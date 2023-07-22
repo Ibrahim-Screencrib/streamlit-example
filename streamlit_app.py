@@ -1,149 +1,74 @@
-# from collections import namedtuple
-# import altair as alt
-# import math
-# import pandas as pd
-# import streamlit as st
+from collections import namedtuple
+import altair as alt
+import math
+import pandas as pd
+import plotly
+import folium
+from streamlit_folium import folium_static
+import streamlit as st
 
 """
-# Welcome to Streamlit!
-
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:
+# Film Tax Credit Incentive Analysis Tool
 
 If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
 forums](https://discuss.streamlit.io).
 
-In the meantime, below is an example of what you can do with just a few lines of code:
+Upload your movie script and your overall budget to see how much you can save by filming in a certain state/country.
 """
 
+movie_script = st.file_uploader("Upload your movie script", type="pdf")
+overall_budget = st.file_uploader("Upload your overall budget", type="pdf")
 
-# with st.echo(code_location='below'):
-#     total_points = st.slider("Number of points in spiral", 1, 5000, 2000)
-#     num_turns = st.slider("Number of turns in spiral", 1, 100, 9)
+st.write("## How much can you save by filming in a certain state/country?")
 
-#     Point = namedtuple('Point', 'x y')
-#     data = []
+# list of tuples for the most common countries mentioned in the movie script with the amount of times they are mentioned
+most_common_countries = [("United States", 20), ("United Kingdom", 15), ("Canada", 10)]
 
-#     points_per_turn = total_points / num_turns
+# grand total for budget
+grand_total = 1000000
 
-#     for curr_point_num in range(total_points):
-#         curr_turn, i = divmod(curr_point_num, points_per_turn)
-#         angle = (curr_turn + 1) * 2 * math.pi * i / points_per_turn
-#         radius = curr_point_num / total_points
-#         x = radius * math.cos(angle)
-#         y = radius * math.sin(angle)
-#         data.append(Point(x, y))
+# Lets use langchain to find similar countries to the ones mentioned in the script
 
-#     st.altair_chart(alt.Chart(pd.DataFrame(data), height=500, width=500)
-#         .mark_circle(color='#0068c9', opacity=0.5)
-#         .encode(x='x:Q', y='y:Q'))
+# Plot 1
 
-import pandas as pd
-import plotly.express as px 
-import streamlit as st
-import plotly.graph_objects as go
+# Add some text 
+st.write(" ## This map was created using Folium in Streamlit")
+st.write(" ### Film Tax Credit Map 1")
 
-# # Load county mention data 
-# mentions = [('United States', 100), ('Canada', 50), ('Mexico', 20)] 
+# Create a basic map
+map = folium.Map(location=[45.5236, -122.6750])
 
-# # Convert mentions to DataFrame
-# mentions_df = pd.DataFrame([
-#   ('United States', 10),
-#   ('Canada', 20),
-#   ('Mexico', 30)  
-# ])
+# Add a marker
+folium.Marker([45.5244, -122.6699], popup='Mt. Hood Meadows').add_to(map)  
 
-# # Load tax credit data
-# tax_credits = pd.read_csv('ScreenCrib Tax Credit Sheet.csv')
+# Display map using Streamlit
+folium_static(map)
 
-# # Create figure
-# fig = px.choropleth(mentions_df, 
-#               locations='country',
-#               scope='north america')
+# --------------------------------------------------------
+# Plot2
 
-# # Create hover text from tax credit info                   
-# def get_popup_text(country):
+# Add some text 
+st.write(" ## This map was created using Folium in Streamlit")
+st.write(" ### Film Tax Credit Map 2")
+url = (
+    "https://raw.githubusercontent.com/python-visualization/folium/main/examples/data/us-states.json"
+)
+state_geo = f"{url}/us-states.json"
+state_unemployment = f"{url}/US_Unemployment_Oct2012.csv"
+state_data = pd.read_csv(state_unemployment)
 
-#   row = tax_credits[tax_credits['Country'] == country]
-  
-#   if len(row) == 0:
-#     # No match found
-#     return "No tax credit info available"
+map2 = folium.Map(location=[48, -102], zoom_start=3)
 
-#   return f"""
-#     Tax Credit Rate: {row['Tax credits'].values[0]}  
-#     Eligibility: {row['Eligibility'].values[0]}
-#     Description: {row['Country description'].values[0]}
-#     Source: {row['Links'].values[0]}
-#   """
-                              
-# # Generate hover text and assign to figure  
-# hover_texts = []
-# for country in mentions:
-#   hover_texts.append(get_popup_text(country))
-  
-# hover_dict = dict(zip(mentions, hover_texts))
+folium.Choropleth(
+    geo_data=state_geo,
+    name="choropleth",
+    data=state_data,
+    columns=["State", "Unemployment"],
+    key_on="feature.id",
+    fill_color="YlGn",
+    fill_opacity=0.7,
+    line_opacity=0.2,
+    legend_name="Unemployment Rate (%)",
+).add_to(map2)
 
-# # Generate list of hover strings
-# hover_strings = []
-# for country, text in hover_dict.items():
-#   hover_strings.append(text) 
-
-# # Pass list to hovertemplate
-# fig.update_traces(hovertemplate=hover_strings)
-
-# df = px.data.gapminder().query("year == 2007")
-# fig = px.choropleth(df, locations="iso_alpha", 
-#                     color="lifeExp", 
-#                     hover_name="country",
-#                     scope="world")
-
-# fig = go.Figure(data=go.Choropleth(
-#     locations=['CA', 'TX', 'NY'], # Spatial coordinates
-#     z = [1.0, 2.0, 3.0], # Data to be color-coded
-#     locationmode = 'USA-states', # set of locations match entries in `locations`
-#     colorscale = 'Reds',
-#     colorbar_title = "Colorbar Title Goes Here",
-# ))
-
-# fig.update_layout(
-#     title_text = 'USA States Choropleth Map',
-#     geo_scope='usa', # limit map scope to USA
-# )
-
-# st.plotly_chart(fig)
-
-import matplotlib.pyplot as plt
-import streamlit as st
-import pandas as pd 
-
-# Page config
-st.set_page_config(page_title='Film Tax Credits', page_icon=':clapper:')
-
-# Load data
-data = pd.read_csv('data.csv')
-
-# Map plot
-fig, ax = plt.subplots()
-ax.scatter(data['Longitude'], data['Latitude'], s=data['Tax Credit']*2000, 
-           c=data['Tax Credit'], cmap='Reds')
-
-# Color bar
-plt.colorbar() 
-
-# Labels 
-for i, country in data.iterrows():
-    plt.text(country['Longitude']+5, country['Latitude'], country['Country'], size=12)
-
-# Plot  
-st.pyplot(fig)
-
-# Info
-st.markdown("""
-This interactive map allows you to visualize the tax credit incentives offered to film production across different countries.
-            
-* Circle size correlates to the percentage tax credit  
-* Color indicates the credit percentage, with darker red signifying higher percentages
-* Rolling over circles shows the country name and tax credit percentage
-
-Use this to help determine which countries offer the most favorable incentives!
-""")
+folium.LayerControl().add_to(map2)
