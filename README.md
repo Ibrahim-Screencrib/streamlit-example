@@ -25,6 +25,12 @@ https://www.youtube.com/watch?v=4RnU5qKTfYY
 https://www.youtube.com/watch?v=JoQhEKh7u0c
 https://python-visualization.github.io/folium/quickstart.html#Markers
 https://leafletjs.com/examples.html
+https://medium.com/@lindsayrallen1/interactive-choropleth-map-of-washington-dc-using-folium-and-python-2794708514d5
+https://data.census.gov/map?g=010XX00US&tid=DECENNIALPL2020.P1&layer=VT_2020_040_00_PP_D1&mode=thematic&loc=43.3751,-113.1138,z2.6270
+
+Goated Video for Local LLM:
+https://youtu.be/fGJUGDRy8vY
+
 
 
 

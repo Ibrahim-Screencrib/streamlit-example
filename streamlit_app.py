@@ -4,14 +4,12 @@ import math
 import pandas as pd
 import plotly
 import folium
+import json
 from streamlit_folium import folium_static
 import streamlit as st
 
 """
 # Film Tax Credit Incentive Analysis Tool
-
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
 
 Upload your movie script and your overall budget to see how much you can save by filming in a certain state/country.
 """
@@ -32,17 +30,17 @@ grand_total = 1000000
 # Plot 1
 
 # Add some text 
-st.write(" ## This map was created using Folium in Streamlit")
-st.write(" ### Film Tax Credit Map 1")
+# st.write(" ## This map was created using Folium in Streamlit")
+# st.write(" ### Film Tax Credit Map 1")
 
-# Create a basic map
-map = folium.Map(location=[45.5236, -122.6750])
+# # Create a basic map
+# map = folium.Map(location=[45.5236, -122.6750])
 
-# Add a marker
-folium.Marker([45.5244, -122.6699], popup='Mt. Hood Meadows').add_to(map)  
+# # Add a marker
+# folium.Marker([45.5244, -122.6699], popup='Mt. Hood Meadows').add_to(map)  
 
-# Display map using Streamlit
-folium_static(map)
+# # Display map using Streamlit
+# folium_static(map)
 
 # --------------------------------------------------------
 # Plot2
@@ -50,25 +48,20 @@ folium_static(map)
 # Add some text 
 st.write(" ## This map was created using Folium in Streamlit")
 st.write(" ### Film Tax Credit Map 2")
-url = (
-    "https://raw.githubusercontent.com/python-visualization/folium/main/examples/data/us-states.json"
-)
-state_geo = f"{url}/us-states.json"
-state_unemployment = f"{url}/US_Unemployment_Oct2012.csv"
-state_data = pd.read_csv(state_unemployment)
+state_data = pd.read_csv('US_Film_Tax_Credit_Minimum_July2023.csv')
 
 map2 = folium.Map(location=[48, -102], zoom_start=3)
 
 folium.Choropleth(
-    geo_data=state_geo,
+    geo_data='us-states.json',
     name="choropleth",
     data=state_data,
-    columns=["State", "Unemployment"],
+    columns=["State", "Film Tax Credit Minimum Rate"],
     key_on="feature.id",
     fill_color="YlGn",
     fill_opacity=0.7,
     line_opacity=0.2,
-    legend_name="Unemployment Rate (%)",
+    legend_name="Film Tax Credit Minimum Rate (%)",
 ).add_to(map2)
 
-folium.LayerControl().add_to(map2)
+folium_static(map2)
